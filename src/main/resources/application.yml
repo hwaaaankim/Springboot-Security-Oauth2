@@ -10,9 +10,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    password: ghksrka3849!
+    password: 
     url: jdbc:mariadb://localhost:3306/security
-    username: root
+    username: 
   mvc:
     view:
       prefix: /templates/
@@ -29,14 +29,14 @@ spring:
       client:
         registration:
           google:
-            client-id: 453116698957-5sdbifnfcrcdft87djin8od77evlkkti.apps.googleusercontent.com
-            client-secret: N4ZFZ9JpDyd5mCgjAqLpEoo2
+            client-id: 
+            client-secret: 
             scope:
             - email
             - profile   
           facebook:
-            client-id: 552274726135881
-            client-secret: e958f26b039440d83145f5c1d44f259d
+            client-id: 
+            client-secret: 
             scope:
             - email
             - public_profile
@@ -44,8 +44,8 @@ spring:
           # 네이버는 OAuth2.0 공식 지원대상이 아니라서 provider 설정이 필요하다.
           # 요청주소도 다르고, 응답 데이터도 다르기 때문이다.
           naver:
-            client-id: OkYtd1CPANb31l9GefRs
-            client-secret: dZQ0rE4Ysk
+            client-id: 
+            client-secret: 
             scope:
             - name
             - email
