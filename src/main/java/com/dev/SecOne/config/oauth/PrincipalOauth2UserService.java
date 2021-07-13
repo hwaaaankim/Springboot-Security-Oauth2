@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -23,8 +22,8 @@ import com.dev.SecOne.repository.UserRepository;
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
 	
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+//	@Autowired
+//	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -41,36 +40,37 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
 		// code를 통해 구성한 정보
 		System.out.println("userRequest clientRegistration : " + userRequest.getClientRegistration());
-		System.out.println("userRequest accessToken : " + userRequest.getAccessToken());
+		System.out.println("userRequest accessToken : " + userRequest.getAccessToken().getTokenValue());
 		System.out.println("getAttributes : "+ super.loadUser(userRequest).getAttributes());
 		// token을 통해 응답받은 회원정보
 		System.out.println("oAuth2User : " + oAuth2User);
 	
 		
 		//강제로 회원가입 진행 초기 버전
-		String provider = userRequest.getClientRegistration().getClientId();//google
-		String providerId = oAuth2User.getAttribute("sub");
-		String username = provider+"_"+providerId; //google_10974285618291642686
-		String password = bCryptPasswordEncoder.encode("Password"); // 필요없으나 임의로 생성 해 준다
-		String email = oAuth2User.getAttribute("email");
-		String role = "ROLE_USER";
+//		String provider = userRequest.getClientRegistration().getRegistrationId();//google
+//		String providerId = oAuth2User.getAttribute("sub");
+//		String username = provider+"_"+providerId; //google_10974285618291642686
+//		String password = bCryptPasswordEncoder.encode("Password"); // 필요없으나 임의로 생성 해 준다
+//		String email = oAuth2User.getAttribute("email");
+//		String role = "ROLE_USER";
+//		
+//		User user = userRepository.findByUsername(username);
+//		if(user ==null) {
+//			user = User.builder()
+//					.username(username)
+//					.password(password)
+//					.email(email)
+//					.role(role)
+//					.provider(provider)
+//					.providerId(providerId)
+//					.build();
+//			System.out.println(user);
+//			userRepository.save(user);
+//		}
+//		
+//		return new PrincipalDetails(user, oAuth2User.getAttributes());
 		
-		User user = userRepository.findByUsername(username);
-		if(user ==null) {
-			user = User.builder()
-					.username(username)
-					.password(password)
-					.email(email)
-					.role(role)
-					.provider(provider)
-					.providerId(providerId)
-					.build();
-			userRepository.save(user);
-		}
-		
-		return new PrincipalDetails(user, oAuth2User.getAttributes());
-		
-//		return processOAuth2User(userRequest, oAuth2User);
+		return processOAuth2User(userRequest, oAuth2User);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -87,6 +87,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 		} else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")){
 			System.out.println("네이버 로그인 요청~~");
 			oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
+			// response 라는 객체 안에 다시 response라는 Map의 형태로 User정보가 들어있기 때문에 response를 전달해준다
 		} else {
 			System.out.println("우리는 구글과 페이스북만 지원해요 ㅎㅎ");
 		}

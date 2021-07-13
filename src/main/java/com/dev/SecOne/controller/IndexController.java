@@ -64,7 +64,9 @@ public class IndexController {
 	}
 
 	@GetMapping("/user")
-	public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principal) {
+	public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principal,
+			Authentication authentication) {
+		System.out.println(authentication.getPrincipal());
 		System.out.println("Principal : " + principal);
 		System.out.println("OAuth2 : "+principal.getUser().getProvider());
 		// iterator 순차 출력 해보기
